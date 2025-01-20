@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:notesapp/features/notes/note_list_view_model.dart';
 
 class NoteList extends StatefulWidget {
@@ -25,6 +26,9 @@ class _NoteListState extends State<NoteList> {
         itemBuilder: (context, index) =>
             Text(widget.viewModel.noteList[index].content),
       ),
+      floatingActionButton: FloatingActionButton(onPressed: () {
+        context.go('/create-note');
+      }),
     );
   }
 }
