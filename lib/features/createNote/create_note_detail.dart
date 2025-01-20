@@ -8,7 +8,7 @@ class CreateNoteDetail extends StatelessWidget {
 
   void createNote(BuildContext context) {
     viewModel.createNote('Создал');
-    context.go('/notes');
+    context.pop();
   }
 
   @override
