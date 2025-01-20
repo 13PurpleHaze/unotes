@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:notesapp/app/dependencies/dependencies.dart';
-import 'package:notesapp/app/router/router.dart';
+import 'package:notesapp/app/navigation/router.dart';
 import 'package:provider/provider.dart';
 
 void main() {
