@@ -17,10 +17,12 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       routerConfig: router,
+      // TODO: вынести тему и добавить темную
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+          navigationBarTheme: const NavigationBarThemeData(
+              backgroundColor: Color.fromARGB(255, 59, 51, 73))),
     );
   }
 }
