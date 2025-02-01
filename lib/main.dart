@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:notesapp/app/dependencies/dependencies.dart';
 import 'package:notesapp/app/navigation/router.dart';
+import 'package:notesapp/app/theme/theme.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -18,11 +19,7 @@ class App extends StatelessWidget {
     return MaterialApp.router(
       routerConfig: router,
       // TODO: вынести тему и добавить темную
-      theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
-          navigationBarTheme: const NavigationBarThemeData(
-              backgroundColor: Color.fromARGB(255, 59, 51, 73))),
+      theme: lightTheme,
     );
   }
 }
