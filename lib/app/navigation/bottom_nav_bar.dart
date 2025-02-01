@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:notesapp/app/navigation/tab_item.dart';
+
+import 'package:notesapp/app/navigation/navigation.dart';
 
 const double bottomNavBarHeight = 70;
 

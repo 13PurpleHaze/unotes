@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:notesapp/app/navigation/bottom_nav_bar.dart';
-import 'package:notesapp/app/navigation/drawer.dart';
-import 'package:notesapp/app/navigation/tab_item.dart';
+
+import 'package:notesapp/app/navigation/navigation.dart';
 
 class RootScreen extends StatelessWidget {
   final StatefulNavigationShell navigationShell;

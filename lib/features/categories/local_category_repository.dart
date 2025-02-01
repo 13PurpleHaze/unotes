@@ -1,6 +1,5 @@
 import 'package:notesapp/app/database/database.dart';
-import 'package:notesapp/features/categories/category_color.dart';
-import 'package:notesapp/features/categories/category_repository.dart';
+import 'package:notesapp/features/categories/categories.dart';
 
 class LocalCategoryRepository implements CategoryRepository {
   final AppDatabase localStore;
@@ -12,6 +11,13 @@ class LocalCategoryRepository implements CategoryRepository {
     await localStore
         .into(localStore.noteCategories)
         .insert(NoteCategoriesCompanion.insert(title: title, color: color));
+  }
+
+  @override
+  void removeCategory(int categoryId) async {
+    await (localStore.delete(localStore.noteCategories)
+          ..where((noteCategory) => noteCategory.id.equals(categoryId)))
+        .go();
   }
 
   @override

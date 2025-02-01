@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:notesapp/features/categories/widgets/color_picker.dart';
 import 'package:go_router/go_router.dart';
-import 'package:notesapp/features/create_category/create_category_view_model.dart';
 import 'package:provider/provider.dart';
+
+import 'package:notesapp/features/create_category/widgets/widgets.dart';
+import 'package:notesapp/features/create_category/create_category.dart';
 
 class CreateCategoryDialog extends StatefulWidget {
   const CreateCategoryDialog({

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:notesapp/features/categories/category_repository.dart';
-import 'package:notesapp/features/notes/note_repository.dart';
+
+import 'package:notesapp/features/categories/categories.dart';
 
 class CreateCategoryViewModel extends ChangeNotifier {
   final CategoryRepository categoryRepository;

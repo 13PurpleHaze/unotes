@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:notesapp/app/database/database.dart';
-import 'package:notesapp/features/categories/category_list_view_model.dart';
-import 'package:notesapp/features/categories/widgets/category_card.dart';
-import 'package:notesapp/features/categories/widgets/create_category_dialog.dart';
-import 'package:provider/provider.dart';
-import 'package:go_router/go_router.dart';
+
+import 'package:notesapp/features/categories/categories.dart';
+import 'package:notesapp/features/create_category/create_category.dart';
 
 class CategoryList extends StatefulWidget {
   final CategoryListViewModel viewModel;
@@ -43,7 +40,13 @@ class _CategoryListState extends State<CategoryList> {
                         child: const Text('CREATE NEW')));
               }
               return ListTile(
-                leading: const Icon(Icons.note),
+                leading: const Icon(Icons.square),
+                trailing: IconButton(
+                  onPressed: () => widget.viewModel
+                      .removeCategory(widget.viewModel.categoryList[index].id),
+                  icon: const Icon(Icons.delete),
+                  color: Theme.of(context).primaryColor,
+                ),
                 title: Text(widget.viewModel.categoryList[index].title),
                 iconColor: Color(widget.viewModel.categoryList[index].color),
               );

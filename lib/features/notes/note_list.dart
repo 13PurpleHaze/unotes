@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:notesapp/features/notes/note_list_view_model.dart';
-import 'package:notesapp/features/notes/widgets/note_card.dart';
+
+import 'package:notesapp/features/notes/notes.dart';
 
 class NoteList extends StatefulWidget {
   const NoteList({super.key, required this.viewModel});

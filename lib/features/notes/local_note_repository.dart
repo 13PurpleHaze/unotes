@@ -1,5 +1,5 @@
 import 'package:notesapp/app/database/database.dart';
-import 'package:notesapp/features/notes/note_repository.dart';
+import 'package:notesapp/features/notes/notes.dart';
 
 class LocalNoteRepository implements NoteRepository {
   final AppDatabase localStore;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:notesapp/features/categories/category_list.dart';
-import 'package:notesapp/features/categories/category_list_view_model.dart';
 import 'package:provider/provider.dart';
+
+import 'package:notesapp/features/categories/categories.dart';
 
 class NavDrawer extends StatelessWidget {
   const NavDrawer({super.key});
@@ -29,29 +29,3 @@ class NavDrawer extends StatelessWidget {
     ]));
   }
 }
-
-// ListView(padding: EdgeInsets.zero, children: [
-//   Row(
-//     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//     children: [
-//       Text(
-//         'CATEGORIES',
-//         style: Theme.of(context).textTheme.titleMedium,
-//       ),
-//       TextButton(
-//           onPressed: () => {},
-//           child: Text(
-//             'CHANGE',
-//             style: Theme.of(context)
-//                 .textTheme
-//                 .titleMedium
-//                 ?.copyWith(color: Colors.blue),
-//           ))
-//     ],
-//   ),
-//   const Divider(),
-// Consumer<CategoryListViewModel>(
-//     builder: (context, viewModel, child) => CategoryList(
-//           viewModel: viewModel,
-//         )),
-// FilledButton(onPressed: () => {}, child: Text('CREATE NEW')),
