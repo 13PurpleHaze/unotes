@@ -9,7 +9,13 @@ class Notes extends Table {
   DateTimeColumn get createdAt => dateTime().nullable()();
 }
 
-@DriftDatabase(tables: [Notes])
+class NoteCategories extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get title => text()();
+  IntColumn get color => integer()();
+}
+
+@DriftDatabase(tables: [Notes, NoteCategories])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 

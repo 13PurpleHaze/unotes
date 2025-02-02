@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:notesapp/app/database/database.dart';
 
 abstract interface class NoteRepository {

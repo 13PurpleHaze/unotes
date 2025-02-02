@@ -1,11 +1,10 @@
 import 'package:go_router/go_router.dart';
-import 'package:notesapp/app/navigation/root_screen.dart';
-import 'package:notesapp/features/createNote/create_note_detail.dart';
-import 'package:notesapp/features/createNote/create_note_view_model.dart';
-import 'package:notesapp/features/notes/note_list.dart';
-import 'package:notesapp/features/notes/note_list_view_model.dart';
-import 'package:notesapp/features/tasks/task_list.dart';
 import 'package:provider/provider.dart';
+
+import 'package:notesapp/app/navigation/navigation.dart';
+import 'package:notesapp/features/notes/notes.dart';
+import 'package:notesapp/features/create_note/create_note.dart';
+import 'package:notesapp/features/tasks/tasks.dart';
 
 final GoRouter router = GoRouter(
   initialLocation: '/notes',
