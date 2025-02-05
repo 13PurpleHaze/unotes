@@ -19,6 +19,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       routerConfig: router,
+
       // TODO: вынести тему и добавить темную
       theme: lightTheme,
     );
