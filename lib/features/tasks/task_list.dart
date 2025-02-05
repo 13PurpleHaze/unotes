@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class TaskList extends StatelessWidget {
@@ -5,6 +6,13 @@ class TaskList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'Tasks',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+      ),
+    );
   }
 }

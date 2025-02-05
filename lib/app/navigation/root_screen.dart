@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:bottom_bar_with_sheet/bottom_bar_with_sheet.dart';
 
 import 'package:notesapp/app/navigation/navigation.dart';
 
@@ -11,7 +10,6 @@ class RootScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: NavDrawer(),
       body: navigationShell,
       extendBody: true,
       bottomNavigationBar: BottomNavBar(

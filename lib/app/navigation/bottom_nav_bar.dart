@@ -25,7 +25,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
   Widget build(BuildContext context) {
     return Container(
       height: bottomNavBarHeight,
-      decoration: const BoxDecoration(boxShadow: [BoxShadow(blurRadius: 16)]),
+      decoration: const BoxDecoration(
+          boxShadow: [BoxShadow(blurRadius: 50, offset: Offset(0, 30))]),
       child: Row(
         children: _generateTabs(),
         crossAxisAlignment: CrossAxisAlignment.stretch,
