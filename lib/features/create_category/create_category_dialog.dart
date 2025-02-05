@@ -41,8 +41,9 @@ class _CreateCategoryDialogState extends State<CreateCategoryDialog> {
                         setState(() {});
                       }
                     },
-                    icon: const Icon(Icons.square)),
-                suffixIconColor: _selectedColor,
+                    icon: const Icon(Icons.circle)),
+                suffixIconColor:
+                    _selectedColor ?? Theme.of(context).primaryColor,
               )),
         ),
         SimpleDialogOption(

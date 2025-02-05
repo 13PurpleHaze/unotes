@@ -16,13 +16,9 @@ class CreateNoteDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-        FilledButton(
-            onPressed: () {
-              createNote(context);
-            },
-            child: const Text('Создать'))
-      ])),
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [TextField()])),
     );
   }
 }

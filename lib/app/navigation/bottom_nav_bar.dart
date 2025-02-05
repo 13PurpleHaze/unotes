@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:notesapp/app/navigation/navigation.dart';
 
-const double bottomNavBarHeight = 70;
+const double bottomNavBarHeight = 80;
 
 class BottomNavBar extends StatefulWidget {
   var activeIndex = 0;
@@ -23,8 +23,9 @@ class BottomNavBar extends StatefulWidget {
 class _BottomNavBarState extends State<BottomNavBar> {
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
       height: bottomNavBarHeight,
+      decoration: const BoxDecoration(boxShadow: [BoxShadow(blurRadius: 16)]),
       child: Row(
         children: _generateTabs(),
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -45,31 +46,17 @@ class _BottomNavBarState extends State<BottomNavBar> {
                           Theme.of(context).navigationBarTheme.backgroundColor,
                       borderRadius: _getBorderRadiusForTab(index),
                       child: InkWell(
-                          customBorder: RoundedRectangleBorder(
-                            borderRadius: _getBorderRadiusForTab(index),
-                          ),
-                          onTap: () => widget.onTabChange(index),
-                          child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  tab.icon.icon,
-                                  color: index == widget.activeIndex
-                                      ? Colors.amber
-                                      : Colors.white,
-                                ),
-                                Text(
-                                  tab.text,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleSmall
-                                      ?.copyWith(
-                                          fontWeight: FontWeight.bold,
-                                          color: index == widget.activeIndex
-                                              ? Colors.amber
-                                              : Colors.white),
-                                )
-                              ])))));
+                        customBorder: RoundedRectangleBorder(
+                          borderRadius: _getBorderRadiusForTab(index),
+                        ),
+                        onTap: () => widget.onTabChange(index),
+                        child: Icon(
+                          tab.icon.icon,
+                          color: index == widget.activeIndex
+                              ? Theme.of(context).primaryColor
+                              : Colors.black,
+                        ),
+                      ))));
         })
         .values
         .toList();
@@ -77,13 +64,9 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
   BorderRadius _getBorderRadiusForTab(index) {
     return BorderRadius.only(
-      topLeft: index == 0 ? const Radius.circular(24) : Radius.zero,
-      bottomLeft: index == 0 ? const Radius.circular(24) : Radius.zero,
+      topLeft: index == 0 ? const Radius.circular(16) : Radius.zero,
       topRight: index == widget.tabs.length - 1
-          ? const Radius.circular(24)
-          : Radius.zero,
-      bottomRight: index == widget.tabs.length - 1
-          ? const Radius.circular(24)
+          ? const Radius.circular(16)
           : Radius.zero,
     );
   }
