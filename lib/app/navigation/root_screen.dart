@@ -11,7 +11,7 @@ class RootScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: navigationShell,
-      extendBody: true,
+      //extendBody: true,
       bottomNavigationBar: BottomNavBar(
         onTabChange: (int index) {
           navigationShell.goBranch(
