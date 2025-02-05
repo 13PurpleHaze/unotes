@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:bottom_bar_with_sheet/bottom_bar_with_sheet.dart';
 
 import 'package:notesapp/app/navigation/navigation.dart';
 
@@ -11,26 +12,21 @@ class RootScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: NavDrawer(),
-      body: Stack(
-        children: [
-          navigationShell,
-          Positioned(
-            left: 20,
-            right: 20,
-            bottom: 40,
-            child: BottomNavBar(
-              onTabChange: (int index) {
-                navigationShell.goBranch(
-                  index,
-                  initialLocation: index == navigationShell.currentIndex,
-                );
-              },
-              activeIndex: navigationShell.currentIndex,
-              tabs: const [
-                TabItem(text: 'Notes', icon: Icon(Icons.edit)),
-                TabItem(text: 'Tasks', icon: Icon(Icons.done))
-              ],
-            ),
+      body: navigationShell,
+      extendBody: true,
+      bottomNavigationBar: BottomNavBar(
+        onTabChange: (int index) {
+          navigationShell.goBranch(
+            index,
+            initialLocation: index == navigationShell.currentIndex,
+          );
+        },
+        activeIndex: navigationShell.currentIndex,
+        tabs: const [
+          TabItem(text: 'Notes', icon: Icon(Icons.edit)),
+          TabItem(
+            text: 'Tasks',
+            icon: Icon(Icons.done),
           )
         ],
       ),

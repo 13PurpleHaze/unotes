@@ -27,9 +27,9 @@ class _NoteListState extends State<NoteList> {
         itemBuilder: (context, index) =>
             Text(widget.viewModel.noteList[index].content),
       ),
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        context.go('/create-note');
-      }),
+      floatingActionButton: FloatingActionButton.large(
+        onPressed: () {},
+      ),
     );
   }
 }
