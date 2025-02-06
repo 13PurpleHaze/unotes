@@ -6,38 +6,33 @@ const double containerRadius = 16;
 class RippleContainer extends Container {
   double? width;
   double? height;
+  double borderRadius;
   void Function()? onTap;
 
   RippleContainer(
       {super.key,
-      this.height,
-      this.width,
       this.onTap,
+      this.borderRadius = containerRadius,
       required Widget super.child,
       super.color});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: height,
-        width: width ?? double.infinity,
         decoration: BoxDecoration(
             border:
                 Border.all(color: Theme.of(context).iconTheme.color!, width: 2),
-            borderRadius:
-                const BorderRadius.all(Radius.circular(containerRadius)),
+            borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
             boxShadow: [
               BoxShadow(
                   color: Theme.of(context).iconTheme.color!,
-                  offset: const Offset(3, 3))
+                  offset: const Offset(2, 2))
             ]),
         child: Material(
-          borderRadius:
-              const BorderRadius.all(Radius.circular(containerRadius - 2)),
+          borderRadius: BorderRadius.all(Radius.circular(borderRadius - 2)),
           color: color ?? Theme.of(context).colorScheme.onPrimary,
           child: InkWell(
-            borderRadius:
-                const BorderRadius.all(Radius.circular(containerRadius)),
+            borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
             onTap: onTap,
             child: child,
           ),
