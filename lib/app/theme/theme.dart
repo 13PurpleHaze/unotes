@@ -16,10 +16,15 @@ final lightTheme = ThemeData(
   colorScheme: ColorScheme.fromSeed(
     brightness: Brightness.light,
     seedColor: Color.fromARGB(255, 104, 89, 217),
-    primary: Color.fromARGB(255, 104, 89, 217),
+    primary: Color.fromARGB(255, 111, 200, 186),
+    secondary: Colors.white,
+    tertiary: Color.fromARGB(255, 233, 106, 170),
   ),
   primaryColor: Color.fromARGB(255, 104, 89, 217),
   fontFamily: 'Rubik',
+  iconTheme: const IconThemeData(
+    color: Colors.black,
+  ),
   navigationBarTheme:
       const NavigationBarThemeData(backgroundColor: Colors.white),
   textTheme: const TextTheme(
