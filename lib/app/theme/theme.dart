@@ -25,8 +25,6 @@ final lightTheme = ThemeData(
   iconTheme: const IconThemeData(
     color: Colors.black,
   ),
-  navigationBarTheme:
-      const NavigationBarThemeData(backgroundColor: Colors.white),
   textTheme: const TextTheme(
       headlineSmall: TextStyle(fontWeight: FontWeight.w700),
       bodyLarge: TextStyle(fontWeight: FontWeight.w400)),
