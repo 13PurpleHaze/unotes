@@ -1,29 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:notesapp/app/widgets/widgets.dart';
+import 'package:notesapp/app/widgets/animated_pressable.dart';
 
 enum ButtonVariant { primary, secondary, tertiary }
 
-class PrimaryButton extends StatelessWidget {
-  final void Function() onPressed;
-  final Widget child;
-  final ButtonVariant variant;
-
-  const PrimaryButton(
+class Button extends StatelessWidget {
+  const Button(
       {super.key,
-      required this.onPressed,
       required this.child,
-      required this.variant});
+      required this.onPressed,
+      this.variant = ButtonVariant.primary});
+
+  final Widget child;
+  final void Function() onPressed;
+  final ButtonVariant variant;
 
   @override
   Widget build(BuildContext context) {
-    return RippleContainer(
-      color: _getButtonColor(context),
+    return AnimatedPressable(
       onTap: onPressed,
+      color: _getButtonColor(context),
       child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8),
-          child: Center(
-            child: child,
-          )),
+        padding: const EdgeInsets.all(8), // TODO: вынести
+        child: Center(
+          child: child,
+        ),
+      ),
     );
   }
 

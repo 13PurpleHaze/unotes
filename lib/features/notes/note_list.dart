@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:notesapp/app/navigation/drawer.dart';
+import 'package:notesapp/app/widgets/widgets.dart';
 
 import 'package:notesapp/features/notes/notes.dart';
 
@@ -28,7 +28,18 @@ class _NoteListState extends State<NoteList> {
             'Notes',
             style: Theme.of(context).textTheme.headlineSmall,
           ),
-          actions: [IconButton(onPressed: () => {}, icon: Icon(Icons.add))],
+          actions: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: PressableIconButton(
+                icon: const Icon(
+                  Icons.save,
+                  color: Colors.black,
+                ),
+                onPressed: () => {},
+              ),
+            ),
+          ],
         ),
         drawer: NavDrawer(),
         body: widget.viewModel.noteList.isNotEmpty
@@ -45,9 +56,12 @@ class _NoteListState extends State<NoteList> {
                   ),
                 )
               ]),
-        floatingActionButton: OutlinedButton(
-          onPressed: () => {},
-          child: Text('d'),
+        floatingActionButton: PressableIconButton(
+          icon: const Icon(
+            Icons.add,
+            size: 45,
+          ),
+          onPressed: () {},
         ));
   }
 }
