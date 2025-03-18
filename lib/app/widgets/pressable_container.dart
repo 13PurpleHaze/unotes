@@ -37,7 +37,7 @@ class PressableContainer extends StatelessWidget {
       ),
       child: Material(
         borderRadius: BorderRadius.all(Radius.circular(borderRadius - 2)),
-        color: color ?? Theme.of(context).colorScheme.primary,
+        color: color ?? Color(4288059030),
         child: InkWell(
           borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
           onTap: onTap,

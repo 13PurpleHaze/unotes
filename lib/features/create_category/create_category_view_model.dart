@@ -7,7 +7,12 @@ class CreateCategoryViewModel extends ChangeNotifier {
 
   CreateCategoryViewModel({required this.categoryRepository});
 
-  void createNote(String title, int color) {
+  void createCategory(String title, int color) {
+    // TODO: мб тоже стоит добавить isFetching, isError, тогда прийдется создать какой-нибудь полноэкранный лоадер
     categoryRepository.addCategory(title, color);
+  }
+
+  void updateCategory(int categoryId, String? title, int? color) {
+    categoryRepository.updateCategory(categoryId, title, color);
   }
 }

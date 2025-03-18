@@ -1,3 +1,4 @@
+import 'package:drift/drift.dart';
 import 'package:notesapp/app/database/database.dart';
 import 'package:notesapp/features/categories/categories.dart';
 
@@ -23,5 +24,15 @@ class LocalCategoryRepository implements CategoryRepository {
   @override
   Future<List<NoteCategory>> getCategoryList() async {
     return await localStore.select(localStore.noteCategories).get();
+  }
+
+  @override
+  void updateCategory(int categoryId, String? title, int? color) {
+    (localStore.update(localStore.noteCategories)
+          ..where((category) => category.id.equals(categoryId)))
+        .write(NoteCategoriesCompanion(
+      color: color != null ? Value(color) : Value.absent(),
+      title: title != null ? Value(title) : Value.absent(),
+    ));
   }
 }
