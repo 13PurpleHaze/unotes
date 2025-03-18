@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-const List<int> colors = [
+const List<int> defaultColors = [
   4293433413,
   4285515962,
   4285094617,
@@ -23,13 +23,17 @@ class ColorPicker extends StatelessWidget {
       children: [
         SimpleDialogOption(
           child: Wrap(
-              children: colors
-                  .map((color) => IconButton(
-                      onPressed: () => {context.pop(color)},
-                      color: Color(color),
-                      icon: const Icon(Icons.circle)))
-                  .toList()),
-        )
+            children: defaultColors
+                .map(
+                  (color) => IconButton(
+                    onPressed: () => {context.pop(color)},
+                    color: Color(color),
+                    icon: const Icon(Icons.circle),
+                  ),
+                )
+                .toList(),
+          ),
+        ),
       ],
     );
   }

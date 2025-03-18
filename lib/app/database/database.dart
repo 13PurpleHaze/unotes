@@ -6,7 +6,8 @@ part 'database.g.dart';
 class Notes extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get content => text()();
-  DateTimeColumn get createdAt => dateTime().nullable()();
+  late final category = integer().nullable().references(NoteCategories, #id)();
+  DateTimeColumn get createdAt => dateTime()();
 }
 
 class NoteCategories extends Table {

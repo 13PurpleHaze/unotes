@@ -3,225 +3,6 @@
 part of 'database.dart';
 
 // ignore_for_file: type=lint
-class $NotesTable extends Notes with TableInfo<$NotesTable, Note> {
-  @override
-  final GeneratedDatabase attachedDatabase;
-  final String? _alias;
-  $NotesTable(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _idMeta = const VerificationMeta('id');
-  @override
-  late final GeneratedColumn<int> id = GeneratedColumn<int>(
-      'id', aliasedName, false,
-      hasAutoIncrement: true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      defaultConstraints:
-          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
-  static const VerificationMeta _contentMeta =
-      const VerificationMeta('content');
-  @override
-  late final GeneratedColumn<String> content = GeneratedColumn<String>(
-      'content', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _createdAtMeta =
-      const VerificationMeta('createdAt');
-  @override
-  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
-      'created_at', aliasedName, true,
-      type: DriftSqlType.dateTime, requiredDuringInsert: false);
-  @override
-  List<GeneratedColumn> get $columns => [id, content, createdAt];
-  @override
-  String get aliasedName => _alias ?? actualTableName;
-  @override
-  String get actualTableName => $name;
-  static const String $name = 'notes';
-  @override
-  VerificationContext validateIntegrity(Insertable<Note> instance,
-      {bool isInserting = false}) {
-    final context = VerificationContext();
-    final data = instance.toColumns(true);
-    if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    }
-    if (data.containsKey('content')) {
-      context.handle(_contentMeta,
-          content.isAcceptableOrUnknown(data['content']!, _contentMeta));
-    } else if (isInserting) {
-      context.missing(_contentMeta);
-    }
-    if (data.containsKey('created_at')) {
-      context.handle(_createdAtMeta,
-          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
-    }
-    return context;
-  }
-
-  @override
-  Set<GeneratedColumn> get $primaryKey => {id};
-  @override
-  Note map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return Note(
-      id: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
-      content: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}content'])!,
-      createdAt: attachedDatabase.typeMapping
-          .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at']),
-    );
-  }
-
-  @override
-  $NotesTable createAlias(String alias) {
-    return $NotesTable(attachedDatabase, alias);
-  }
-}
-
-class Note extends DataClass implements Insertable<Note> {
-  final int id;
-  final String content;
-  final DateTime? createdAt;
-  const Note({required this.id, required this.content, this.createdAt});
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    map['id'] = Variable<int>(id);
-    map['content'] = Variable<String>(content);
-    if (!nullToAbsent || createdAt != null) {
-      map['created_at'] = Variable<DateTime>(createdAt);
-    }
-    return map;
-  }
-
-  NotesCompanion toCompanion(bool nullToAbsent) {
-    return NotesCompanion(
-      id: Value(id),
-      content: Value(content),
-      createdAt: createdAt == null && nullToAbsent
-          ? const Value.absent()
-          : Value(createdAt),
-    );
-  }
-
-  factory Note.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return Note(
-      id: serializer.fromJson<int>(json['id']),
-      content: serializer.fromJson<String>(json['content']),
-      createdAt: serializer.fromJson<DateTime?>(json['createdAt']),
-    );
-  }
-  @override
-  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return <String, dynamic>{
-      'id': serializer.toJson<int>(id),
-      'content': serializer.toJson<String>(content),
-      'createdAt': serializer.toJson<DateTime?>(createdAt),
-    };
-  }
-
-  Note copyWith(
-          {int? id,
-          String? content,
-          Value<DateTime?> createdAt = const Value.absent()}) =>
-      Note(
-        id: id ?? this.id,
-        content: content ?? this.content,
-        createdAt: createdAt.present ? createdAt.value : this.createdAt,
-      );
-  Note copyWithCompanion(NotesCompanion data) {
-    return Note(
-      id: data.id.present ? data.id.value : this.id,
-      content: data.content.present ? data.content.value : this.content,
-      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
-    );
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('Note(')
-          ..write('id: $id, ')
-          ..write('content: $content, ')
-          ..write('createdAt: $createdAt')
-          ..write(')'))
-        .toString();
-  }
-
-  @override
-  int get hashCode => Object.hash(id, content, createdAt);
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      (other is Note &&
-          other.id == this.id &&
-          other.content == this.content &&
-          other.createdAt == this.createdAt);
-}
-
-class NotesCompanion extends UpdateCompanion<Note> {
-  final Value<int> id;
-  final Value<String> content;
-  final Value<DateTime?> createdAt;
-  const NotesCompanion({
-    this.id = const Value.absent(),
-    this.content = const Value.absent(),
-    this.createdAt = const Value.absent(),
-  });
-  NotesCompanion.insert({
-    this.id = const Value.absent(),
-    required String content,
-    this.createdAt = const Value.absent(),
-  }) : content = Value(content);
-  static Insertable<Note> custom({
-    Expression<int>? id,
-    Expression<String>? content,
-    Expression<DateTime>? createdAt,
-  }) {
-    return RawValuesInsertable({
-      if (id != null) 'id': id,
-      if (content != null) 'content': content,
-      if (createdAt != null) 'created_at': createdAt,
-    });
-  }
-
-  NotesCompanion copyWith(
-      {Value<int>? id, Value<String>? content, Value<DateTime?>? createdAt}) {
-    return NotesCompanion(
-      id: id ?? this.id,
-      content: content ?? this.content,
-      createdAt: createdAt ?? this.createdAt,
-    );
-  }
-
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (id.present) {
-      map['id'] = Variable<int>(id.value);
-    }
-    if (content.present) {
-      map['content'] = Variable<String>(content.value);
-    }
-    if (createdAt.present) {
-      map['created_at'] = Variable<DateTime>(createdAt.value);
-    }
-    return map;
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('NotesCompanion(')
-          ..write('id: $id, ')
-          ..write('content: $content, ')
-          ..write('createdAt: $createdAt')
-          ..write(')'))
-        .toString();
-  }
-}
-
 class $NoteCategoriesTable extends NoteCategories
     with TableInfo<$NoteCategoriesTable, NoteCategory> {
   @override
@@ -436,146 +217,282 @@ class NoteCategoriesCompanion extends UpdateCompanion<NoteCategory> {
   }
 }
 
+class $NotesTable extends Notes with TableInfo<$NotesTable, Note> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $NotesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _categoryMeta =
+      const VerificationMeta('category');
+  @override
+  late final GeneratedColumn<int> category = GeneratedColumn<int>(
+      'category', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'REFERENCES note_categories (id)'));
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _contentMeta =
+      const VerificationMeta('content');
+  @override
+  late final GeneratedColumn<String> content = GeneratedColumn<String>(
+      'content', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _createdAtMeta =
+      const VerificationMeta('createdAt');
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+      'created_at', aliasedName, false,
+      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [category, id, content, createdAt];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'notes';
+  @override
+  VerificationContext validateIntegrity(Insertable<Note> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('category')) {
+      context.handle(_categoryMeta,
+          category.isAcceptableOrUnknown(data['category']!, _categoryMeta));
+    }
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('content')) {
+      context.handle(_contentMeta,
+          content.isAcceptableOrUnknown(data['content']!, _contentMeta));
+    } else if (isInserting) {
+      context.missing(_contentMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(_createdAtMeta,
+          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  Note map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Note(
+      category: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}category']),
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      content: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}content'])!,
+      createdAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at'])!,
+    );
+  }
+
+  @override
+  $NotesTable createAlias(String alias) {
+    return $NotesTable(attachedDatabase, alias);
+  }
+}
+
+class Note extends DataClass implements Insertable<Note> {
+  final int? category;
+  final int id;
+  final String content;
+  final DateTime createdAt;
+  const Note(
+      {this.category,
+      required this.id,
+      required this.content,
+      required this.createdAt});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || category != null) {
+      map['category'] = Variable<int>(category);
+    }
+    map['id'] = Variable<int>(id);
+    map['content'] = Variable<String>(content);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    return map;
+  }
+
+  NotesCompanion toCompanion(bool nullToAbsent) {
+    return NotesCompanion(
+      category: category == null && nullToAbsent
+          ? const Value.absent()
+          : Value(category),
+      id: Value(id),
+      content: Value(content),
+      createdAt: Value(createdAt),
+    );
+  }
+
+  factory Note.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return Note(
+      category: serializer.fromJson<int?>(json['category']),
+      id: serializer.fromJson<int>(json['id']),
+      content: serializer.fromJson<String>(json['content']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'category': serializer.toJson<int?>(category),
+      'id': serializer.toJson<int>(id),
+      'content': serializer.toJson<String>(content),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+    };
+  }
+
+  Note copyWith(
+          {Value<int?> category = const Value.absent(),
+          int? id,
+          String? content,
+          DateTime? createdAt}) =>
+      Note(
+        category: category.present ? category.value : this.category,
+        id: id ?? this.id,
+        content: content ?? this.content,
+        createdAt: createdAt ?? this.createdAt,
+      );
+  Note copyWithCompanion(NotesCompanion data) {
+    return Note(
+      category: data.category.present ? data.category.value : this.category,
+      id: data.id.present ? data.id.value : this.id,
+      content: data.content.present ? data.content.value : this.content,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('Note(')
+          ..write('category: $category, ')
+          ..write('id: $id, ')
+          ..write('content: $content, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(category, id, content, createdAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is Note &&
+          other.category == this.category &&
+          other.id == this.id &&
+          other.content == this.content &&
+          other.createdAt == this.createdAt);
+}
+
+class NotesCompanion extends UpdateCompanion<Note> {
+  final Value<int?> category;
+  final Value<int> id;
+  final Value<String> content;
+  final Value<DateTime> createdAt;
+  const NotesCompanion({
+    this.category = const Value.absent(),
+    this.id = const Value.absent(),
+    this.content = const Value.absent(),
+    this.createdAt = const Value.absent(),
+  });
+  NotesCompanion.insert({
+    this.category = const Value.absent(),
+    this.id = const Value.absent(),
+    required String content,
+    required DateTime createdAt,
+  })  : content = Value(content),
+        createdAt = Value(createdAt);
+  static Insertable<Note> custom({
+    Expression<int>? category,
+    Expression<int>? id,
+    Expression<String>? content,
+    Expression<DateTime>? createdAt,
+  }) {
+    return RawValuesInsertable({
+      if (category != null) 'category': category,
+      if (id != null) 'id': id,
+      if (content != null) 'content': content,
+      if (createdAt != null) 'created_at': createdAt,
+    });
+  }
+
+  NotesCompanion copyWith(
+      {Value<int?>? category,
+      Value<int>? id,
+      Value<String>? content,
+      Value<DateTime>? createdAt}) {
+    return NotesCompanion(
+      category: category ?? this.category,
+      id: id ?? this.id,
+      content: content ?? this.content,
+      createdAt: createdAt ?? this.createdAt,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (category.present) {
+      map['category'] = Variable<int>(category.value);
+    }
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (content.present) {
+      map['content'] = Variable<String>(content.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('NotesCompanion(')
+          ..write('category: $category, ')
+          ..write('id: $id, ')
+          ..write('content: $content, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
-  late final $NotesTable notes = $NotesTable(this);
   late final $NoteCategoriesTable noteCategories = $NoteCategoriesTable(this);
+  late final $NotesTable notes = $NotesTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [notes, noteCategories];
+  List<DatabaseSchemaEntity> get allSchemaEntities => [noteCategories, notes];
 }
 
-typedef $$NotesTableCreateCompanionBuilder = NotesCompanion Function({
-  Value<int> id,
-  required String content,
-  Value<DateTime?> createdAt,
-});
-typedef $$NotesTableUpdateCompanionBuilder = NotesCompanion Function({
-  Value<int> id,
-  Value<String> content,
-  Value<DateTime?> createdAt,
-});
-
-class $$NotesTableFilterComposer extends Composer<_$AppDatabase, $NotesTable> {
-  $$NotesTableFilterComposer({
-    required super.$db,
-    required super.$table,
-    super.joinBuilder,
-    super.$addJoinBuilderToRootComposer,
-    super.$removeJoinBuilderFromRootComposer,
-  });
-  ColumnFilters<int> get id => $composableBuilder(
-      column: $table.id, builder: (column) => ColumnFilters(column));
-
-  ColumnFilters<String> get content => $composableBuilder(
-      column: $table.content, builder: (column) => ColumnFilters(column));
-
-  ColumnFilters<DateTime> get createdAt => $composableBuilder(
-      column: $table.createdAt, builder: (column) => ColumnFilters(column));
-}
-
-class $$NotesTableOrderingComposer
-    extends Composer<_$AppDatabase, $NotesTable> {
-  $$NotesTableOrderingComposer({
-    required super.$db,
-    required super.$table,
-    super.joinBuilder,
-    super.$addJoinBuilderToRootComposer,
-    super.$removeJoinBuilderFromRootComposer,
-  });
-  ColumnOrderings<int> get id => $composableBuilder(
-      column: $table.id, builder: (column) => ColumnOrderings(column));
-
-  ColumnOrderings<String> get content => $composableBuilder(
-      column: $table.content, builder: (column) => ColumnOrderings(column));
-
-  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
-      column: $table.createdAt, builder: (column) => ColumnOrderings(column));
-}
-
-class $$NotesTableAnnotationComposer
-    extends Composer<_$AppDatabase, $NotesTable> {
-  $$NotesTableAnnotationComposer({
-    required super.$db,
-    required super.$table,
-    super.joinBuilder,
-    super.$addJoinBuilderToRootComposer,
-    super.$removeJoinBuilderFromRootComposer,
-  });
-  GeneratedColumn<int> get id =>
-      $composableBuilder(column: $table.id, builder: (column) => column);
-
-  GeneratedColumn<String> get content =>
-      $composableBuilder(column: $table.content, builder: (column) => column);
-
-  GeneratedColumn<DateTime> get createdAt =>
-      $composableBuilder(column: $table.createdAt, builder: (column) => column);
-}
-
-class $$NotesTableTableManager extends RootTableManager<
-    _$AppDatabase,
-    $NotesTable,
-    Note,
-    $$NotesTableFilterComposer,
-    $$NotesTableOrderingComposer,
-    $$NotesTableAnnotationComposer,
-    $$NotesTableCreateCompanionBuilder,
-    $$NotesTableUpdateCompanionBuilder,
-    (Note, BaseReferences<_$AppDatabase, $NotesTable, Note>),
-    Note,
-    PrefetchHooks Function()> {
-  $$NotesTableTableManager(_$AppDatabase db, $NotesTable table)
-      : super(TableManagerState(
-          db: db,
-          table: table,
-          createFilteringComposer: () =>
-              $$NotesTableFilterComposer($db: db, $table: table),
-          createOrderingComposer: () =>
-              $$NotesTableOrderingComposer($db: db, $table: table),
-          createComputedFieldComposer: () =>
-              $$NotesTableAnnotationComposer($db: db, $table: table),
-          updateCompanionCallback: ({
-            Value<int> id = const Value.absent(),
-            Value<String> content = const Value.absent(),
-            Value<DateTime?> createdAt = const Value.absent(),
-          }) =>
-              NotesCompanion(
-            id: id,
-            content: content,
-            createdAt: createdAt,
-          ),
-          createCompanionCallback: ({
-            Value<int> id = const Value.absent(),
-            required String content,
-            Value<DateTime?> createdAt = const Value.absent(),
-          }) =>
-              NotesCompanion.insert(
-            id: id,
-            content: content,
-            createdAt: createdAt,
-          ),
-          withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
-              .toList(),
-          prefetchHooksCallback: null,
-        ));
-}
-
-typedef $$NotesTableProcessedTableManager = ProcessedTableManager<
-    _$AppDatabase,
-    $NotesTable,
-    Note,
-    $$NotesTableFilterComposer,
-    $$NotesTableOrderingComposer,
-    $$NotesTableAnnotationComposer,
-    $$NotesTableCreateCompanionBuilder,
-    $$NotesTableUpdateCompanionBuilder,
-    (Note, BaseReferences<_$AppDatabase, $NotesTable, Note>),
-    Note,
-    PrefetchHooks Function()>;
 typedef $$NoteCategoriesTableCreateCompanionBuilder = NoteCategoriesCompanion
     Function({
   Value<int> id,
@@ -588,6 +505,27 @@ typedef $$NoteCategoriesTableUpdateCompanionBuilder = NoteCategoriesCompanion
   Value<String> title,
   Value<int> color,
 });
+
+final class $$NoteCategoriesTableReferences
+    extends BaseReferences<_$AppDatabase, $NoteCategoriesTable, NoteCategory> {
+  $$NoteCategoriesTableReferences(
+      super.$_db, super.$_table, super.$_typedResult);
+
+  static MultiTypedResultKey<$NotesTable, List<Note>> _notesRefsTable(
+          _$AppDatabase db) =>
+      MultiTypedResultKey.fromTable(db.notes,
+          aliasName:
+              $_aliasNameGenerator(db.noteCategories.id, db.notes.category));
+
+  $$NotesTableProcessedTableManager get notesRefs {
+    final manager = $$NotesTableTableManager($_db, $_db.notes)
+        .filter((f) => f.category.id.sqlEquals($_itemColumn<int>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_notesRefsTable($_db));
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: cache));
+  }
+}
 
 class $$NoteCategoriesTableFilterComposer
     extends Composer<_$AppDatabase, $NoteCategoriesTable> {
@@ -606,6 +544,27 @@ class $$NoteCategoriesTableFilterComposer
 
   ColumnFilters<int> get color => $composableBuilder(
       column: $table.color, builder: (column) => ColumnFilters(column));
+
+  Expression<bool> notesRefs(
+      Expression<bool> Function($$NotesTableFilterComposer f) f) {
+    final $$NotesTableFilterComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.id,
+        referencedTable: $db.notes,
+        getReferencedColumn: (t) => t.category,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$NotesTableFilterComposer(
+              $db: $db,
+              $table: $db.notes,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return f(composer);
+  }
 }
 
 class $$NoteCategoriesTableOrderingComposer
@@ -644,6 +603,27 @@ class $$NoteCategoriesTableAnnotationComposer
 
   GeneratedColumn<int> get color =>
       $composableBuilder(column: $table.color, builder: (column) => column);
+
+  Expression<T> notesRefs<T extends Object>(
+      Expression<T> Function($$NotesTableAnnotationComposer a) f) {
+    final $$NotesTableAnnotationComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.id,
+        referencedTable: $db.notes,
+        getReferencedColumn: (t) => t.category,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$NotesTableAnnotationComposer(
+              $db: $db,
+              $table: $db.notes,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return f(composer);
+  }
 }
 
 class $$NoteCategoriesTableTableManager extends RootTableManager<
@@ -655,12 +635,9 @@ class $$NoteCategoriesTableTableManager extends RootTableManager<
     $$NoteCategoriesTableAnnotationComposer,
     $$NoteCategoriesTableCreateCompanionBuilder,
     $$NoteCategoriesTableUpdateCompanionBuilder,
-    (
-      NoteCategory,
-      BaseReferences<_$AppDatabase, $NoteCategoriesTable, NoteCategory>
-    ),
+    (NoteCategory, $$NoteCategoriesTableReferences),
     NoteCategory,
-    PrefetchHooks Function()> {
+    PrefetchHooks Function({bool notesRefs})> {
   $$NoteCategoriesTableTableManager(
       _$AppDatabase db, $NoteCategoriesTable table)
       : super(TableManagerState(
@@ -693,9 +670,35 @@ class $$NoteCategoriesTableTableManager extends RootTableManager<
             color: color,
           ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map((e) => (
+                    e.readTable(table),
+                    $$NoteCategoriesTableReferences(db, table, e)
+                  ))
               .toList(),
-          prefetchHooksCallback: null,
+          prefetchHooksCallback: ({notesRefs = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [if (notesRefs) db.notes],
+              addJoins: null,
+              getPrefetchedDataCallback: (items) async {
+                return [
+                  if (notesRefs)
+                    await $_getPrefetchedData<NoteCategory,
+                            $NoteCategoriesTable, Note>(
+                        currentTable: table,
+                        referencedTable:
+                            $$NoteCategoriesTableReferences._notesRefsTable(db),
+                        managerFromTypedResult: (p0) =>
+                            $$NoteCategoriesTableReferences(db, table, p0)
+                                .notesRefs,
+                        referencedItemsForCurrentItem: (item,
+                                referencedItems) =>
+                            referencedItems.where((e) => e.category == item.id),
+                        typedResults: items)
+                ];
+              },
+            );
+          },
         ));
 }
 
@@ -708,18 +711,263 @@ typedef $$NoteCategoriesTableProcessedTableManager = ProcessedTableManager<
     $$NoteCategoriesTableAnnotationComposer,
     $$NoteCategoriesTableCreateCompanionBuilder,
     $$NoteCategoriesTableUpdateCompanionBuilder,
-    (
-      NoteCategory,
-      BaseReferences<_$AppDatabase, $NoteCategoriesTable, NoteCategory>
-    ),
+    (NoteCategory, $$NoteCategoriesTableReferences),
     NoteCategory,
-    PrefetchHooks Function()>;
+    PrefetchHooks Function({bool notesRefs})>;
+typedef $$NotesTableCreateCompanionBuilder = NotesCompanion Function({
+  Value<int?> category,
+  Value<int> id,
+  required String content,
+  required DateTime createdAt,
+});
+typedef $$NotesTableUpdateCompanionBuilder = NotesCompanion Function({
+  Value<int?> category,
+  Value<int> id,
+  Value<String> content,
+  Value<DateTime> createdAt,
+});
+
+final class $$NotesTableReferences
+    extends BaseReferences<_$AppDatabase, $NotesTable, Note> {
+  $$NotesTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static $NoteCategoriesTable _categoryTable(_$AppDatabase db) =>
+      db.noteCategories.createAlias(
+          $_aliasNameGenerator(db.notes.category, db.noteCategories.id));
+
+  $$NoteCategoriesTableProcessedTableManager? get category {
+    final $_column = $_itemColumn<int>('category');
+    if ($_column == null) return null;
+    final manager = $$NoteCategoriesTableTableManager($_db, $_db.noteCategories)
+        .filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_categoryTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: [item]));
+  }
+}
+
+class $$NotesTableFilterComposer extends Composer<_$AppDatabase, $NotesTable> {
+  $$NotesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get content => $composableBuilder(
+      column: $table.content, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+      column: $table.createdAt, builder: (column) => ColumnFilters(column));
+
+  $$NoteCategoriesTableFilterComposer get category {
+    final $$NoteCategoriesTableFilterComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.category,
+        referencedTable: $db.noteCategories,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$NoteCategoriesTableFilterComposer(
+              $db: $db,
+              $table: $db.noteCategories,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+}
+
+class $$NotesTableOrderingComposer
+    extends Composer<_$AppDatabase, $NotesTable> {
+  $$NotesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get content => $composableBuilder(
+      column: $table.content, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+      column: $table.createdAt, builder: (column) => ColumnOrderings(column));
+
+  $$NoteCategoriesTableOrderingComposer get category {
+    final $$NoteCategoriesTableOrderingComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.category,
+        referencedTable: $db.noteCategories,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$NoteCategoriesTableOrderingComposer(
+              $db: $db,
+              $table: $db.noteCategories,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+}
+
+class $$NotesTableAnnotationComposer
+    extends Composer<_$AppDatabase, $NotesTable> {
+  $$NotesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get content =>
+      $composableBuilder(column: $table.content, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  $$NoteCategoriesTableAnnotationComposer get category {
+    final $$NoteCategoriesTableAnnotationComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.category,
+        referencedTable: $db.noteCategories,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$NoteCategoriesTableAnnotationComposer(
+              $db: $db,
+              $table: $db.noteCategories,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+}
+
+class $$NotesTableTableManager extends RootTableManager<
+    _$AppDatabase,
+    $NotesTable,
+    Note,
+    $$NotesTableFilterComposer,
+    $$NotesTableOrderingComposer,
+    $$NotesTableAnnotationComposer,
+    $$NotesTableCreateCompanionBuilder,
+    $$NotesTableUpdateCompanionBuilder,
+    (Note, $$NotesTableReferences),
+    Note,
+    PrefetchHooks Function({bool category})> {
+  $$NotesTableTableManager(_$AppDatabase db, $NotesTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$NotesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$NotesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$NotesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<int?> category = const Value.absent(),
+            Value<int> id = const Value.absent(),
+            Value<String> content = const Value.absent(),
+            Value<DateTime> createdAt = const Value.absent(),
+          }) =>
+              NotesCompanion(
+            category: category,
+            id: id,
+            content: content,
+            createdAt: createdAt,
+          ),
+          createCompanionCallback: ({
+            Value<int?> category = const Value.absent(),
+            Value<int> id = const Value.absent(),
+            required String content,
+            required DateTime createdAt,
+          }) =>
+              NotesCompanion.insert(
+            category: category,
+            id: id,
+            content: content,
+            createdAt: createdAt,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) =>
+                  (e.readTable(table), $$NotesTableReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: ({category = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins: <
+                  T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic>>(state) {
+                if (category) {
+                  state = state.withJoin(
+                    currentTable: table,
+                    currentColumn: table.category,
+                    referencedTable: $$NotesTableReferences._categoryTable(db),
+                    referencedColumn:
+                        $$NotesTableReferences._categoryTable(db).id,
+                  ) as T;
+                }
+
+                return state;
+              },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ));
+}
+
+typedef $$NotesTableProcessedTableManager = ProcessedTableManager<
+    _$AppDatabase,
+    $NotesTable,
+    Note,
+    $$NotesTableFilterComposer,
+    $$NotesTableOrderingComposer,
+    $$NotesTableAnnotationComposer,
+    $$NotesTableCreateCompanionBuilder,
+    $$NotesTableUpdateCompanionBuilder,
+    (Note, $$NotesTableReferences),
+    Note,
+    PrefetchHooks Function({bool category})>;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
   $AppDatabaseManager(this._db);
-  $$NotesTableTableManager get notes =>
-      $$NotesTableTableManager(_db, _db.notes);
   $$NoteCategoriesTableTableManager get noteCategories =>
       $$NoteCategoriesTableTableManager(_db, _db.noteCategories);
+  $$NotesTableTableManager get notes =>
+      $$NotesTableTableManager(_db, _db.notes);
 }

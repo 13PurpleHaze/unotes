@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:notesapp/app/theme/brightness_view_model.dart';
 import 'package:provider/provider.dart';
 
 import 'package:notesapp/app/dependencies/dependencies.dart';
 import 'package:notesapp/app/navigation/navigation.dart';
 import 'package:notesapp/app/theme/theme.dart';
+import 'package:flutter_quill/flutter_quill.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
   runApp(MultiProvider(
@@ -19,9 +22,15 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       routerConfig: router,
-
-      // TODO: вынести тему и добавить темную
-      theme: lightTheme,
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        FlutterQuillLocalizations.delegate,
+      ],
+      theme: context.watch<BrightnessViewModel>().brightness == Brightness.dark
+          ? darkTheme
+          : lightTheme,
     );
   }
 }
